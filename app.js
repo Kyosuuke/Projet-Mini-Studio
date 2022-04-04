@@ -10,10 +10,14 @@ class Level extends Phaser.Scene {
 
         this.load.image('button', 'assets/bomb.png');
         this.load.image('logo', 'assets/logo.png');
+        this.load.image('logoborder', 'assets/logoborder.png')
 
     }
 
     create() {
+
+        this.add.image(0, 0, 'bg').setOrigin(0);
+
         var invadersIcon = this.add.image(120, 34, 'button', 0).setOrigin(0).setInteractive();
 
         invadersIcon.on('pointerup', function () {
@@ -43,7 +47,7 @@ class Level extends Phaser.Scene {
 
         });
 
-        this.scene.add(handle, demo, true);
+        this.scene.add(handle, demo, true)
     }
 
     resize(width, height) {
@@ -52,12 +56,24 @@ class Level extends Phaser.Scene {
 
         this.cameras.resize(width, height);
     }
+
+    
 }
 
 class ButtonGame extends Phaser.Scene {
+
+    constructor (handle, parent)
+    {
+        super(handle);
+
+        this.parent = parent;
+    }
+
     create() {
         let clickCount = 0;
         this.clickCountText = this.add.text(100, 200, '');
+
+        var bg = this.add.image(0, 0,'logoborder').setOrigin(0);
 
         const clickButton = this.add.image(700, 300, 'logo', 0)
             .setInteractive()
@@ -69,6 +85,13 @@ class ButtonGame extends Phaser.Scene {
     updateClick(clickCount) {
         this.clickCountText.setText(`Button has been clicked ${clickCount} times.`);
     }
+
+    refresh ()
+    {
+        this.cameras.main.setPosition(this.parent.x, this.parent.y);
+
+        this.scene.bringToTop();
+    }
 }
 
 ButtonGame.WIDTH = 400;
@@ -79,7 +102,20 @@ var config = {
     parent: 'phaser-example',
     width: window.innerWidth,
     height: window.innerHeight,
-    scene: new Level()
+    scene: Controller,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: false,
+            gravity: { y: 0 }
+        }
+    }
 };
 
 var game = new Phaser.Game(config);
+
+window.addEventListener('resize', function (event) {
+
+    game.resize(window.innerWidth, window.innerHeight);
+
+}, false);   
