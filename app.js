@@ -11,6 +11,8 @@ class Level extends Phaser.Scene {
         this.load.image('button', 'assets/bomb.png');
         this.load.image('logo', 'assets/logo.png');
         this.load.image('logoborder', 'assets/logoborder.png')
+        this.load.image('test', 'assets/ship.png')
+        this.load.image('test2', 'assets/button.png')
 
     }
 
@@ -19,9 +21,14 @@ class Level extends Phaser.Scene {
         this.add.image(0, 0, 'bg').setOrigin(0);
 
         var invadersIcon = this.add.image(120, 34, 'button', 0).setOrigin(0).setInteractive();
+        var eventbutton = this.add.image(240, 34, 'test2', 0).setOrigin(0).setInteractive();
 
         invadersIcon.on('pointerup', function () {
             this.createWindow(ButtonGame)
+        }, this);
+
+        eventbutton.on('pointerup', function (){
+            this.createWindow(ButtonEvent)
         }, this);
 
     }
@@ -97,6 +104,38 @@ class ButtonGame extends Phaser.Scene {
 ButtonGame.WIDTH = 400;
 ButtonGame.HEIGHT = 400;
 
+class ButtonEvent extends Phaser.Scene {
+    
+    constructor (handle, parent)
+    {
+        super(handle);
+
+        this.parent = parent;
+
+    }
+
+    create(){
+
+        var sprite = this.add.sprite(400, 300, 'test').setInteractive();
+
+        sprite.on('pointerdown', function (pointer) {
+
+        });
+
+        sprite.on('pointerout', function (pointer) {
+
+        });
+
+        sprite.on('pointerup', function (pointer) {
+
+        });
+       
+    }
+}
+ButtonEvent.WIDTH = 400;
+ButtonEvent.HEIGHT = 400;
+
+
 var config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
@@ -118,4 +157,4 @@ window.addEventListener('resize', function (event) {
 
     game.resize(window.innerWidth, window.innerHeight);
 
-}, false);   
+}, false);
